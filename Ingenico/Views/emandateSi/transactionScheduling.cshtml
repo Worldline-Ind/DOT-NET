@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "transactionscheduling";
+}
+<head>
+    <title>Transaction Scheduling</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transaction Scheduling</h1>
+    <form action="/emandateSi/transactionScheduling" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="F7vcx/NDTpzJe653cKHuCFLOlV0BvQSD5MM1MyB9Aa6orn1icu0oVpTCvmbvGcpS//+6TXdrkjdd/TUlHVQyDQ==" />
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <td><label for="Type_of_Transaction">Type of Transaction (eMandate/SI on Cards) </label></td>
+                <td>
+                    <select name="modeOfTransaction" id="modeOfTransaction">
+                        <option value="002">eMandate</option>
+                        <option value="001">SI on Cards</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Mandate_Registration_Id">Mandate Registration Id </label></td>
+                <td><input type="text" name="mandateRegId" id="mandateRegId" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td><label for="Amount">Amount </label></td>
+                <td><input type="text" name="amount" id="amount" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td><label for="Date">Txn Date </label></td>
+                <td><input type="date" name="date" id="date" value="" required="required" /></td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" /><br>
+    </form>    <br><br>
+    @* <form action="/emandate-si/transaction-scheduling" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="0KDhi/MX0Hrd+EbY9ffKj2kJEL47tAG9oDR83Mf792pvtUAucrm2sIBBVslqT+7VxDg/rk1ilwkZCnzK+tLEyQ==" /></form>*@
+    @{
+        if (ViewBag.tokens != null)
+        {
+            <table border="2" align="middle">
+                <tbody>
+                    <tr>
+                        <td><label for="Status_Code">Status code</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["statusCode"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Merchant_Transaction_Reference_No">Merchant transaction reference no</label></td>
+                        <td>@ViewBag.tokens[1]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="TPSL_Transaction_ID">Tpsl transaction id</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["identifier"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Message">Message</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["errorMessage"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Amount">Amount</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["amount"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Date_Time">Date time</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["dateTime"]</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+</body>
+

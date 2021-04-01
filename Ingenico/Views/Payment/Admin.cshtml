@@ -1,0 +1,544 @@
+﻿
+@{
+    ViewBag.Title = "Admin";
+
+
+}
+
+<head>
+    <title>Ingenico Admin</title>
+
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 7px;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        input, select, textarea {
+            max-width: 100%
+        }
+    </style>
+    <script src="https://www.paynimo.com/paynimocheckout/client/lib/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var siVal = document.getElementById("enableSI").value;
+            if (siVal == "true") {
+              
+                $('.siEnabled').show();
+            }
+            else {
+                $('.siEnabled').hide();
+            }
+
+            $("#enableSI").change(function () {
+
+                var textselected = document.getElementById("enableSI").value;
+          
+                if (textselected=="true") {
+                    $('.siEnabled').show();
+                }
+                else {
+                    $('.siEnabled').hide();
+                }
+             
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <h2>Ingenico Admin</h2>
+    @if (HttpContext.Current.Request.HttpMethod == "POST")
+    {
+        <div class="alert alert-success alert-dismissible" data-dismiss="alert">
+            <a href="#" class="close" aria-label="close">&times;</a>
+            <strong>Success!</strong> Admin information saved successfully.
+        </div>
+    }
+
+    @* /checkoutdotnet *@
+    <form action="/payment/admin" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="@ViewBag.config_data[1]" />
+
+                                                            <table cellpadding="10" cellspacing="10">
+                                                                <tr>
+                                                                    <th>
+                                                                        Description
+                                                                    </th>
+                                                                    <td>
+                                                                        Ingenico ePayments (a Worldline brand) is India's leading digital payment solutions company. Being a company with more than 45 years of global payment experience, we are present in India for over 20 years and are powering over 550,000 businesses with our tailored payment solution.
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Merchant_Code">*Merchant Code</label>
+                                                                    </th>
+                                                                    <td>
+
+                                                                        <input type="text" name="merchantCode" id="merchantCode" value="@ViewBag.config_data[2]" size="100" placeholder="Merchant Code" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Merchant_Scheme_Code">*Merchant Scheme Code</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="merchantSchemeCode" id="merchantSchemeCode" value="@ViewBag.config_data[3]" size="100" placeholder="Merchant Scheme Code" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="SALT">*SALT</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="SALT" id="SALT" value="@ViewBag.config_data[4]" size="100" placeholder="Key" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="currency">*Currency</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("currency", new SelectList(ViewBag.currencyCodes, "Value", "Text", ViewBag.config_data[5]), new { style = "width:85%" })
+                                                                        @*<select name="currency" id="currency" style="width:85%">
+                    <option value="INR">INR</option>
+                    <option selected="selected" value="USD">USD</option>
+                </select>*@
+                                                                        <br><br>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Type_of_Payment">*Type of Payment</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("typeOfPayment", new SelectList(ViewBag.typeOfPayment, "Value", "Text", ViewBag.config_data[6]), new { style = "width:85%" })
+                                                                        @*<select name="typeOfPayment" id="typeOfPayment" style="width:85%">
+                    <option selected="selected" value="TEST">TEST</option>
+                    <option value="LIVE">LIVE</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        For TEST mode amount will be charge 1
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Primary_Color">Primary color</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="primaryColor" id="primaryColor" value="@ViewBag.config_data[7]" size="100" />
+                                                                        <br><br>
+                                                                        Color value can be hex, rgb or actual color name
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Secondary_Color">Secondary color</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="secondaryColor" id="secondaryColor" value="@ViewBag.config_data[8]" size="100" />
+                                                                        <br><br>
+                                                                        Color value can be hex, rgb or actual color name
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Button_Color_1">Button color 1</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="buttonColor1" id="buttonColor1" value="@ViewBag.config_data[9]" size="100" />
+                                                                        <br><br>
+                                                                        Color value can be hex, rgb or actual color name
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Button_Color_2">Button color 2</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="buttonColor2" id="buttonColor2" value="@ViewBag.config_data[10]" size="100" />
+                                                                        <br><br>
+                                                                        Color value can be hex, rgb or actual color name
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Logo_URL">Logo url</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="logoURL" id="logoURL" value="@ViewBag.config_data[11]" size="100" />
+                                                                        <br><br>
+                                                                        An absolute URL pointing to a logo image of merchant which will show on checkout popup
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_ExpressPay">Enable expresspay</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableExpressPay", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[12]), new { style = "width:85%" })
+                                                                        @*<select name="enableExpressPay" id="enableExpressPay" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        To enable saved payments set its value to yes
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Separate_Card_Mode">Separate card mode</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("separateCardMode", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[13]), new { style = "width:85%" })
+                                                                        @*<select name="separateCardMode" id="separateCardMode" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        If this feature is enabled checkout shows two separate payment mode(Credit Card and Debit Card)
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_New_Window_Flow">Enable new window flow</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableNewWindowFlow", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[14]), new { style = "width:85%" })
+                                                                        @*<select name="enableNewWindowFlow" id="enableNewWindowFlow" style="width:85%">
+                    <option selected="selected" value="true">Enabled</option>
+                    <option value="false">Disabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        If this feature is enabled, then bank page will open in new window
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Merchant_Message">Merchant message</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="merchantMessage" id="merchantMessage" value="@ViewBag.config_data[15]" size="100" />
+                                                                        <br><br>
+                                                                        Customize message from merchant which will be shown to customer in checkout page
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Disclaimer_Message">Disclaimer message</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <input type="text" name="disclaimerMessage" id="disclaimerMessage" value="@ViewBag.config_data[16]" size="100" />
+                                                                        <br><br>
+                                                                        Customize disclaimer message from merchant which will be shown to customer in checkout page
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Payment_Mode">Payment mode</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("paymentMode", new SelectList(ViewBag.paymentModes, "Value", "Text", ViewBag.config_data[17]), new { style = "width:85%" })
+                                                                        @*<select name="paymentMode" id="paymentMode" style="width:85%">
+                    <option selected="selected" value="all">all</option>
+                    <option value="cards">cards</option>
+                    <option value="netBanking">netBanking</option>
+                    <option value="UPI">UPI</option>
+                    <option value="imps">imps</option>
+                    <option value="wallets">wallets</option>
+                    <option value="cashCards">cashCards</option>
+                    <option value="NEFTRTGS">NEFTRTGS</option>
+                    <option value="emiBanks">emiBanks</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        If Bank selection is at Ingenico ePayments India Pvt. Ltd. (a Worldline brand) end then select all, if bank selection at Merchant end then pass appropriate mode respective to selected option
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Payment_Mode_Order">Payment mode order</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <textarea name="paymentModeOrder" id="paymentModeOrder" cols="80" rows="2">
+@ViewBag.config_data[18]</textarea>
+                                                                        <br><br>
+                                                                        Please pass order in this format: cards,netBanking,imps,wallets,cashCards,UPI,MVISA,debitPin,NEFTRTGS,emiBanks.
+                                                                        Merchant can define their payment mode order
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_InstrumentDeRegistration">Enable instrumentderegistration</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableInstrumentDeRegistration", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[19]), new { style = "width:85%" })
+                                                                        @*<select name="enableInstrumentDeRegistration" id="enableInstrumentDeRegistration" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        If this feature is enabled, you will have an option to delete saved cards
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Transaction_Type">Transaction type</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        <select name="transactionType" id="transactionType" style="width:85%"><option selected="selected" value="SALE">SALE</option></select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Hide_SavedInstruments">Hide savedinstruments</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("hideSavedInstruments", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[21]), new { style = "width:85%" })
+                                                                        @*<select name="hideSavedInstruments" id="hideSavedInstruments" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        If enabled checkout hides saved payment options even in case of enableExpressPay is enabled
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Save_Instrument">Save instrument</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("saveInstrument", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[22]), new { style = "width:85%" })
+                                                                        @*<select name="saveInstrument" id="saveInstrument" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to vault instrumen
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Display_Transaction_Message_on_Popup">Display transaction message on popup</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("displayTransactionMessageOnPopup", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[23]), new { style = "width:85%" })
+                                                                        @*<select name="displayTransactionMessageOnPopup" id="displayTransactionMessageOnPopup" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Embed_Payment_Gateway_On_Page">Embed payment gateway on page</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("embedPaymentGatewayOnPage", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[24]), new { style = "width:85%" })
+                                                                        @*<select name="embedPaymentGatewayOnPage" id="embedPaymentGatewayOnPage" style="width:85%">
+                    <option value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_SI">Enable si</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableSI", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[25]), new { style = "width:85%" })
+                                                                        @*<select name="enableSI" id="enableSI" style="width:85%">
+                    <option value="false">Disabled</option>
+                    <option selected="selected" value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable eMandate using this feature
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Hide_SI_Details">Hide si details</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("hideSIDetails", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[26]), new { style = "width:85%" })
+                                                                        @*@Html.DropDownList("hideSIDetails", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[26]), new { style = "width:85%" })*@
+                                                                        @*<select name="hideSIDetails" id="hideSIDetails" style="width:85%">
+                    <option value="false">Disabled</option>
+                    <option selected="selected" value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to hide SI details from the customer
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Hide_SI_Confirmation">Hide si confirmation</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("hideSIConfirmation", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[27]), new { style = "width:85%" })
+                                                                        @*<select name="hideSIConfirmation" id="hideSIConfirmation" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to hide the confirmation screen in eMandate/eNACH/eSign registration
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Expand_SI_Details">Expand si details</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("expandSIDetails", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[28]), new { style = "width:85%" })
+                                                                        @*<select name="expandSIDetails" id="expandSIDetails" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to show eMandate/eNACH/eSign details in expanded mode by default
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_Debit_Day">Enable debit day</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableDebitDay", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[29]), new { style = "width:85%" })
+                                                                        @*<select name="enableDebitDay" id="enableDebitDay" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to acccept debit day value eMandate/eNACH/eSign registration
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Show_SI_Response_Msg">Show si response msg</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("showSIResponseMsg", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[30]), new { style = "width:85%" })
+                                                                        @*<select name="showSIResponseMsg" id="showSIResponseMsg" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to show eMandate/eNACH/eSign registrations details also in final checkout response
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Show_SI_Confirmation">Show si confirmation</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("showSIConfirmation", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[31]), new { style = "width:85%" })
+                                                                        @*<select name="showSIConfirmation" id="showSIConfirmation" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to show confirmation screen for registration
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Enable_Txn_For_NonSI_Cards">Enable txn for nonsi cards</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("enableTxnForNonSICards", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[32]), new { style = "width:85%" })
+                                                                        @*<select name="enableTxnForNonSICards" id="enableTxnForNonSICards" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to proceed with a normal transaction with same card details
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th>
+                                                                        <label for="Show_All_Modes_With_SI">Show all modes with si</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("showAllModesWithSI", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[33]), new { style = "width:85%" })
+                                                                        @*<select name="showAllModesWithSI" id="showAllModesWithSI" style="width:85%">
+                    <option selected="selected" value="false">Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>*@
+                                                                        <br><br>
+                                                                        Enable this feature to show all modes with SI
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="siEnabled">
+                                                                <th scope="row">
+                                                                    <label for="siDetailsAtMerchantEnd">Enable SI details at Merchant end</label>
+                                                                </th>
+                                                                <td>
+                                                                    @Html.DropDownList("siDetailsAtMerchantEnd", new SelectList(ViewBag.enbDisb, "Value", "Text", ViewBag.config_data[34]), new { style = "width:85%" })
+                                                                </td>
+                                                                </tr>
+                                                                <tr class="siEnabled">
+                                                                    <th>
+                                                                        <label for="Amount_Type">Amount Type</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("amounttype", new SelectList(ViewBag.amounttype, "Value", "Text", ViewBag.config_data[25]), new { style = "width:85%" })
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="siEnabled">
+                                                                    <th>
+                                                                        <label for="Frequency">Frequency</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        @Html.DropDownList("frequency", new SelectList(ViewBag.frequency, "Value", "Text", ViewBag.config_data[26]), new { style = "width:85%" })
+                                                                    </td>
+                                                                </tr>
+
+
+                                                            </table>
+        <br/>
+        <div><input type="submit" name="commit" value="Submit" data-disable-with="submit" /></div>
+    </form>
+</body>

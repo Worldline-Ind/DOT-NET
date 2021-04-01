@@ -1,0 +1,285 @@
+﻿
+@{
+    ViewBag.Title = "responseHandler";
+}
+
+
+<h2> Online Transaction Result </h2>
+<table border="1" cellpadding="2" cellspacing="2">
+    <tr>
+        <th>
+            Txn Status
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[0]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Txn Message
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[1]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Txn Error Message
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[2]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Clnt Txn Ref
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[3]
+        </td>
+    </tr>
+
+
+    <tr>
+        <th>
+            TPSL Bank Cd
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[4]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            TPSL Txn Id
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[5]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Txn Amt
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[6]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Clnt Request Meta
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[7]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            TPSL Txn Time
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[8]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Balance Amt
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[9]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Card Id
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[10]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Alias Name
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[11]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Bank Transaction Id
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[12]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Mandate Reg No
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[13]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Token
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[14]
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            Hash
+        </th>
+        <td>
+            @ViewBag.online_transaction_msg[15]
+        </td>
+    </tr>
+
+</table>
+<br />
+@*@ViewBag.paramsData.ToString()*@
+
+@if (ViewBag.abrt == true)
+{
+}
+else
+{
+    <div>
+        @{
+            if (ViewBag.paramsData != null)
+            {
+                <div>@ViewBag.paramsData.ToString();</div>
+            }
+            else
+            {
+
+            }
+        }
+    </div>
+
+    <script>
+    var dual_verification_result = JSON.parse('@Html.Raw(ViewBag.dual_verification_result)');}
+    </script>
+
+    if (ViewBag.tokens != null)
+    {
+        <h2>Dual Verification Result</h2>
+        <table border="1" cellpadding="2" cellspacing="2">
+            <tr>
+                <th>
+                    Merchant Code
+                </th>
+                <td>
+                    @ViewBag.tokens[0]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Merchant Txn Identifier
+                </th>
+                <td>
+                    @ViewBag.tokens[1]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Merchant Txn Request Type
+                </th>
+                <td>
+                    @ViewBag.tokens[2]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Response
+                </th>
+                <td>
+                    @ViewBag.tokens[3]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Payment DateTime
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["paymentTransaction"]["dateTime"]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Amount
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["paymentTransaction"]["amount"]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Payment Transaction Identifier
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["paymentTransaction"]["identifier"]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Status Code
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["paymentTransaction"]["statusCode"]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Status Message
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["paymentTransaction"]["statusMessage"]
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Error
+                </th>
+                <td>
+                    @ViewBag.tokens[6]["error"]
+                </td>
+            </tr>
+
+        </table>
+
+    }
+
+    if (ViewBag.dual_verification_result != null)
+    {
+<pre>
+@ViewBag.dual_verification_result["Result"].ToString().Trim()
+</pre>
+    }
+    //your code
+}

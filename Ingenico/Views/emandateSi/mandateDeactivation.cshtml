@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "mandateDeactivation";
+}
+<head>
+    <script src="https://www.tecprocesssolution.com/proto/p2m/client/lib/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.tecprocesssolution.com/proto/P2M/server/lib/checkout.js"></script>
+    <title>Mandate Deactivation</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        label {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mandate Deactivation</h1>
+    <form action="/emandateSi/mandateDeactivation" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="7nrE7tVZbOMByY2O4PZo2jj2+AYziDOoNfCf8HhERZCc9eFr8A7cknj2ayRnqYd9GzBAFrlSNMZVSDsqDGiAmw==" />
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr style="display:none;">
+                <td><label for="Type_of_Transaction">Type of Transaction (eMandate/SI on Cards) </label></td>
+                <td>
+                    <select name="modeOfTransaction" id="modeOfTransaction">
+                        @*<option value="002">eMandate</option>*@
+                        <option value="001" selected>SI on Cards</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Mandate_Registration_Id">Mandate Registration Id </label></td>
+                <td><input type="text" name="mandateRegId" id="mandateRegId" value="" required="required" /></td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" /><br>
+    </form>	<br><br>
+    @* <form action="/emandate-si/mandate-deactivation" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="1WllKyJvsQSo41Qvp0//49Sd+hFgtrgls7dHqzqM3Sun5kCuBzgBddHcsoUgEBBE91tCAepsv0vTD+NxTqAYIA==" /></form>*@
+    @{
+        if (ViewBag.tokens != null)
+        {
+            <table border="2" align="middle">
+                <tbody>
+                    <tr>
+                        <td><label for="Status_Code">Status code</label></td>
+                        @{ if (@ViewBag.tokens[6]["paymentTransaction"]["statusCode"] != "")
+                            {
+                                <td>@ViewBag.tokens[6]["paymentTransaction"]["statusCode"]</td>
+                            }
+                            else
+                            {
+                                <td> Not Found</td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td><label for="Merchant_Transaction_Reference_No">Merchant transaction reference no</label></td>
+                        <td>@ViewBag.tokens[1]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Message">Message</label></td>
+                        @{ if (@ViewBag.tokens[6]["paymentTransaction"]["errorMessage"] != "")
+                            {
+                                <td>@ViewBag.tokens[6]["paymentTransaction"]["errorMessage"]</td>
+                            }
+                            else
+                            {
+                                <td> Not Found</td>
+                            }
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+</body>

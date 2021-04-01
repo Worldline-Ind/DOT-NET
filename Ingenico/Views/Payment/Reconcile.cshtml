@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Reconcile";
+}
+
+
+<html>
+<head>
+
+    <title>Reconciliation</title>
+
+    <style>
+
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+    @{
+        @*@ViewBag.tokens[0]
+            @ViewBag.tokens[1]["merchantRefNo"]*@
+    }
+
+
+    <h1>Reconciliation</h1>
+
+    <form action="/payment/reconcile" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="w5+3l1YcvCGSwSPgrMwVnuSszI3xf1v0Aw40AtOs6UcRXWVcvGJpthqZIMYYKGJTXgcMJb/Qmp12PJz8/tajSg==" />
+
+        <label for="Merchant_Ref_No">Merchant Ref No: </label>
+
+        <textarea name="merchantRefNo" id="merchantRefNo" placeholder="enter comma separated merchantRefNo" required="required">
+</textarea>
+
+        <label for="Date">From Date: </label>
+
+        <input type="date" name="fromDate" id="fromDate" value="" required="required" />
+
+        <label for="Date">To Date: </label>
+
+        <input type="date" name="endDate" id="endDate" value="" required="required" />
+
+        <input type="submit" name="commit" value="Submit" data-disable-with="submit" /><br>
+
+    </form>
+    <br><br>
+
+
+
+    <form action="/payment/reconcile" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="js1ZCkarLBN5LcWhqQrf5pJJjv19fkYdKH3pxQDX3TRcD4vBrNX5hPF1xocd7qgrKOJOVTPRh3RdT0E7La2XOQ==" />
+    </form>
+    @{
+        if (ViewBag.transDetails != null)
+        {
+            foreach (var item in ViewBag.transDetails)
+            {
+    <table>
+        <tr>
+            <td>Status Code</td>
+            <td>@item[6]["paymentTransaction"]["statusCode"].ToString()</td>
+        </tr>
+        <tr>
+            <td>Merchant Transaction Reference No</td>
+            <td>@item[1].ToString()</td>
+        </tr>
+        <tr>
+            <td>TPSL Transaction ID</td>
+            <td>@item[6]["paymentTransaction"]["identifier"].ToString()</td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td>@item[6]["paymentTransaction"]["amount"].ToString()</td>
+        </tr>
+        <tr>
+            <td>Message</td>
+            <td>@item[6]["paymentTransaction"]["errorMessage"].ToString()</td>
+        </tr>
+        <tr>
+            <td>Status Message</td>
+            <td>@item[6]["paymentTransaction"]["statusMessage"].ToString()</td>
+        </tr>
+        <tr>
+            <td>Date Time</td>
+            <td>@item[6]["paymentTransaction"]["dateTime"].ToString()</td>
+        </tr>
+    </table>
+    <br/>
+            }
+        }
+
+    }
+
+</body>
+
+</html>

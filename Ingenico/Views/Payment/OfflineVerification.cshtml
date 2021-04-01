@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "OfflineVerification";
+}
+<html>
+
+<head>
+    <script src="https://www.tecprocesssolution.com/proto/p2m/client/lib/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.tecprocesssolution.com/proto/P2M/server/lib/checkout.js"></script>
+
+    <title>Offline Verification Page</title>
+    <style>
+        table, td, tr {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(document).off('click', '#btnsubmit').on('click', '#btnsubmit', function (e) {
+                e.preventDefault();
+                var jsonVals = JSON.parse('@Html.Raw(ViewBag.config_data)');
+
+                var data = {
+                    "merchant": {
+                        "identifier": jsonVals['merchantCode']
+                    },
+                    "transaction": {
+                        "deviceIdentifier": "S",
+                        "currency": jsonVals['currency'],
+                        //"identifier": "1516163889655",
+                        //"dateTime": "17-01-2018",
+                        "identifier": document.getElementById("merchantRefNo").value,
+                        "dateTime": document.getElementById("date").value,
+                        "requestType": "O"
+                    }
+                }
+
+                var myJSON = JSON.stringify(data);
+
+                $.ajax({
+                    type: "POST",
+                    url: "https://www.paynimo.com/api/paynimoV2.req",
+                    data: myJSON,
+                    dataType: "json",
+                    success: function (response) {
+                        //alert("Hello" + response['merchantCode']);
+                        loadData(response);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+                });
+            });
+
+
+
+            function loadData(data) {
+                // Here we will format & load/show data
+                var tab = $('<table style="border:1;align="middle"></table>');
+
+                //var trows = $('<tr><td>Status Code</td><td>' + data['paymentMethod']['paymentTransaction']['statusCode'] + '</td></tr>');
+                //trows.append('<tr><td>Merchant Transaction Reference No</td><td>' + data['merchantTransactionIdentifier'] + '</td></tr>');
+
+                //var thead = $('');
+                //thead.append('<tr><td>Status Code</td>');
+                //thead.append('<td>' + data['paymentMethod']['paymentTransaction']['statusCode'] + '</td></tr>');
+                //thead.append('<tr><td>Merchant Transaction Reference No</td>');
+                //thead.append('<td>' + data['merchantTransactionIdentifier'] + '</td></tr>');
+
+                tab.append('<tr><th>Status Code</th><td>' + data['paymentMethod']['paymentTransaction']['statusCode'] + '</td></tr>');
+                tab.append('<tr><th>Merchant Transaction Reference No</th><td>' + data['merchantTransactionIdentifier'] + '</td></tr>');
+                tab.append('<tr><th>TPSL Transaction ID</th><td>' + data['paymentMethod']['paymentTransaction']['identifier'] + '</td></tr>');
+                tab.append('<tr><th>Amount</th><td>' + data['paymentMethod']['paymentTransaction']['amount'] + '</td></tr>');
+                tab.append('<tr><th>Message</th><td>' + data['paymentMethod']['paymentTransaction']['errorMessage'] + '</td></tr>');
+                tab.append('<tr><th>Status Message</th><td>' + data['paymentMethod']['paymentTransaction']['statusMessage'] + '</td></tr>');
+                tab.append('<tr><th>Date Time</th><td>' + data['paymentMethod']['paymentTransaction']['dateTime'] + '</td></tr>');
+
+                //tab.append("");
+
+                //tab.replaceWith("rows", thead);
+               // tab.append(thead);
+                //$.each(data, function (i, val) {
+                //    // Append database data here
+                //    var trow = $('<tr></tr>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['statusCode'] + '</td>');
+                //    //trow.append('<td>' + data['merchantTransactionIdentifier'] + '</td>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['identifier'] + '</td>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['amount'] + '</td>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['errorMessage'] + '</td>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['statusMessage'] + '</td>');
+                //    //trow.append('<td>' + data['paymentMetrod']['paymentTransaction']['dateTime'] + '</td>');
+                //    tab.append(trow);
+                //});
+              //  $("tr:odd", tab).css('background-color', '#C4C4C4');
+                $("#UpdatePanel").html(tab);
+            };
+        });
+    </script>
+</head>
+
+<body>
+
+    <h1>Offline Verification</h1>
+    <form action="/payment/OfflineVerification" accept-charset="UTF-8" metrod="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="autrenticity_token" value="NPjjWw4b8K0Z/FxfIRF407E0mrp5gn6s2pBBJupoqcTJ6NYGufp0VQWUjXXndw5KneAjBvHBorjWTxlXRmeZDQ==" />
+        <label for="Merchant_Ref_No">Merchant Ref No: </label>
+        <input type="text" name="merchantRefNo" id="merchantRefNo" value="" required="required" />
+        <label for="Date">Date: </label>
+        <input type="date" name="date" id="date" value="" required="required" />
+        <input type="submit" name="commit" value="Submit" id="btnsubmit" data-disable-witr="submit" />
+    </form>	<br><br>
+
+    <form action="/payment/OfflineVerification" id="UpdatePanel" accept-charset="UTF-8" metrod="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="autrenticity_token" value="crC+NddpEUyFQ/0NxrGbpGFfoIDl2BnVEstf2JVQAhWPoItoYIiVtJkrLCcA1+09TYsZPG2bxcEeFAepOV8y3A==" /></form>
+</body>
+
+</html>

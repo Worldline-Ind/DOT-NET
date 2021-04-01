@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "mandateVerification";
+}
+
+<head>
+    <title>Mandate Verification</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+   
+</head>
+
+<body>
+
+    <h1>Mandate Verification</h1>
+    <form action="/emandateSi/mandateVerification" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="d+QzaDZY4Awk9LwlU6cU3oB2ueUFcgkBY0mhdWXzbAnc5Rw72QNmYvoisMiQNk4Vk9rifhLCfsZpfFubHi7oIg==" />
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <td><label for="Type_of_Transaction">Type of Transaction (eMandate/SI on Cards) </label></td>
+                <td>
+                    <select name="modeOfVerification" id="modeOfVerification">
+                        <option value="002">eMandate</option>
+                        <option value="001">SI on Cards</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Merchant_Transaction_Id">Merchant Transaction Id </label></td>
+                <td><input type="text" name="merchantTxnId" id="merchantTxnId" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td><label for="Consumer_Transaction_Id">Consumer Transaction Id (Customer Id used during transaction)</label></td>
+                <td><input type="text" name="consumerTxnId" id="consumerTxnId" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td><label for="Date">Date </label></td>
+                <td><input type="date" name="date" id="date" value="" required="required" /></td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" /><br>
+    </form>	<br><br>
+
+    @*<form action="/emandate-si/mandate-verification" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="a8S1PBeUKCis7WPJ3XTIJTPQCF+3YK2i+nCaNG6yCczAxZpv+M+uRnI7byQe5ZLuIHxTxKDQ2mXwRWDaFW+N5w==" /></form>*@
+    @{
+        if (ViewBag.tokens != null)
+        {
+            <table border="2" align="middle">
+                <tbody>
+                    <tr>
+                        <td><label for="Status_Code">Status code</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["statusCode"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Merchant_Transaction_Reference_No">Merchant transaction reference no</label></td>
+                        <td>@ViewBag.tokens[1]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="TPSL_Transaction_ID">Tpsl transaction id</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["identifier"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Message">Message</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"]</td>
+                    </tr>
+                </tbody>
+            </table>
+            }
+        }
+        </body>

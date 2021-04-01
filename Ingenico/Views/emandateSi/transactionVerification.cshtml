@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "transactionVerification";
+}
+<head>
+    <title>Transaction Verification</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transaction Verification</h1>
+    <form action="/emandateSi/transactionVerification" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="/4Ev+Ks+05ARZiUQ+nmCfd3zROja9/JWWOAknc0ugIr6cvQ8zfKhGpYiWWvjrAYPvfkRGzjXbj/g1mp+mDI9qQ==" />
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <td><label for="Type_of_Transaction">Type of Transaction (eMandate/SI on Cards) </label></td>
+                <td>
+                    <select name="modeOfVerification" id="modeOfVerification">
+                        <option value="002">eMandate</option>
+                        <option value="001">SI on Cards</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="Merchant_Transaction_Id">Merchant Transaction Id (Transaction Id sent during transaction scheduling)</label></td>
+                <td><input type="text" name="merchantTxnId" id="merchantTxnId" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td><label for="Date">Date </label></td>
+                <td><input type="date" name="date" id="date" value="" required="required" /></td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" /><br>
+    </form>	<br><br>
+    @* <form action="/emandate-si/transaction-verification" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="4TPbTaAoFpHAiW7mzQgUik3LWchkIqz8r1ZDhHNwmBzkwACJxuRkG0fNEp3U3ZD4LcEMO4YCMJUXYA1nJmwlPw==" /></form>*@
+    @{
+        if (ViewBag.tokens != null)
+        {
+            <table border="2" align="middle">
+                <tbody>
+                    <tr>
+                        <td><label for="Status_Code">Status code</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["statusCode"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Merchant_Transaction_Reference_No">Merchant transaction reference no</label></td>
+                        <td>@ViewBag.tokens[1]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="TPSL_Transaction_ID">Tpsl transaction id</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["identifier"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Message">Message</label></td>
+                        @if (ViewBag.tokens[6]["paymentTransaction"]["statusCode"].ToString() == "0399")
+                        {
+                            /**/
+                            <td>@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"]</td>
+                        }
+                        else
+                        {
+                            <td>@ViewBag.tokens[6]["error"]["desc"]</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td><label for="Amount">Status</label></td>
+                        @{
+                            if (@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"].ToString() == "S")
+                            {
+                                <td>Success</td>
+                            }
+                            else if (@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"].ToString() == "I")
+                            {
+                                <td>Initiated</td>
+                            }
+                            else if (@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"].ToString() == "F")
+                            {
+                                <td>Failure</td>
+                            }
+                            else
+                            {
+                                <td>@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"].ToString()</td>
+
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td><label for="Date_Time">Date time</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["dateTime"]</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    }
+</body>

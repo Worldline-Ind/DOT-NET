@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "stopPayment";
+}
+
+<head>
+    <title>Stop Payment</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Stop Payment</h1>
+    <form action="/emandateSi/stopPayment" accept-charset="UTF-8" method="post">
+        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="VjJgiesziH3wbY3JNVl9tbN8otZRnRwyCB6EpxKud+NPcTADq5CzzwEHecWih18ibs/wwKZ3vn+8d7RWNNls6w==" />
+        <label for="TPSL_Transaction_Id">TPSL Transaction Id (TPSL ID given in response of Transaction scheduling): </label>
+        <input type="text" name="txnId" id="txnId" value="" required="required" />
+        <br><br>
+        <input type="submit" name="commit" value="Submit" data-disable-with="Submit" /><br>
+    </form>	<br><br>
+
+    <form action="/emandate-si/stop-payment" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="kiECi0HeNL9pP1L4jlx1MFIGvn174RRwkOd5Zote/0yLYlIBAX0PDZhVpvQZglenj7Xsa4wLtj0kjkmXrSnkRA==" /></form>
+
+    @{
+        if (ViewBag.tokens != null)
+        {
+            <table>
+                <tbody>
+                    <tr>
+                        <td><label for="Status_Code">Status code</label></td>
+                        <td>@ViewBag.tokens[6]["paymentTransaction"]["statusCode"]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Merchant_Transaction_Reference_No">Merchant transaction reference no</label></td>
+                        <td>@ViewBag.tokens[1]</td>
+                    </tr>
+                    <tr>
+                        <td><label for="Message">Message</label></td>
+                        @if (ViewBag.tokens[6]["paymentTransaction"]["statusCode"].ToString() != "")
+                        {
+                            /**/
+                            <td>@ViewBag.tokens[6]["paymentTransaction"]["statusMessage"]</td>
+                        }
+                        else
+                        {
+                            <td>@ViewBag.tokens[6]["error"]["desc"]</td>
+                        }
+                     
+                    </tr>
+                </tbody>
+            </table>
+            }
+        }
+        </body>
